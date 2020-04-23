@@ -29,6 +29,9 @@ import reactor.core.publisher.Flux;
 @Slf4j
 public class jugadaService {
 	
+	/**
+	 * "@Autowired" Permite utilizar los metodos de la interfaz Jugador, Cartasjugador y Cartas heredados de JPARepository
+	 */
 	@Autowired
 	CartasjugadorRepository cjRepository;
 	
@@ -48,6 +51,12 @@ public class jugadaService {
         notificationProcessor = EmitterProcessor.<Jugador>create();
     }
 
+     /**
+      * Reparte las 52 cartas entre los dos jugadores asignados a la partida
+      * @param p1
+      * @param p2
+      * @return
+      */
     @GetMapping("/deal/cards/{player1}/{player2}")
     public ResponseEntity<?> dealCards(
             @PathVariable("player1") int p1, @PathVariable("player2")int p2) {
@@ -81,8 +90,14 @@ public class jugadaService {
         notificationProcessor.onNext(player2);
 
         return new ResponseEntity<>(player1, HttpStatus.OK);
-    }
+    }    
     
+    /**
+     * Devuelve el ganador de la partida
+     * @param p1
+     * @param p2
+     * @return
+     */
     @GetMapping("/winer/{player1}/{player2}")
     public ResponseEntity<?> gameOver(@PathVariable("player1")int p1, @PathVariable("player2")int p2){
     	
@@ -100,6 +115,11 @@ public class jugadaService {
     	}
     }
     
+    /**
+     * Le quita la carta al que entregue la carta menor
+     * @param cj
+     * @return
+     */
     @PostMapping("/remove/cards")
     public ResponseEntity<?> removeCards(@RequestBody Cartasjugador cj){
     	
@@ -112,6 +132,11 @@ public class jugadaService {
     	return new ResponseEntity<>(j, HttpStatus.OK);
     }
     
+    /**
+     * Limpia los datos de los movimientos en la partida una vez se finaliza
+     * @param p1
+     * @param p2
+     */
     @GetMapping("/clean/game/{player1}/{player2}")
     public void cleanGame(@PathVariable("player1")int p1, @PathVariable("player2")int p2){
     	List<Cartasjugador> cj = cjRepository.findByJugadoridjugador(p1);
@@ -127,6 +152,11 @@ public class jugadaService {
     	
     }    
     
+    /**
+     * Le asigna la carta del jugador que entrego la carta menor al jugador que entrego la carta mayor
+     * @param cj
+     * @return
+     */
     @PostMapping("/move/cards")
     public ResponseEntity<?> moveCards(@RequestBody Cartasjugador cj){
     	

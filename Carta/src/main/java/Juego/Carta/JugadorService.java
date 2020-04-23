@@ -28,6 +28,9 @@ import reactor.core.publisher.Flux;
 @Slf4j
 public class JugadorService {
 
+	/**
+	 * Permite utilizar los metodos de la interfaz jugador heredados de JPARepository
+	 */
 	@Autowired
 	JugadorRepository jugadorRepository;
 	
@@ -41,6 +44,11 @@ public class JugadorService {
         notificationProcessor = EmitterProcessor.<Jugador>create();
     }
 
+     /**
+      * Creacion de un nuevo jugador
+      * @param j
+      * @return
+      */
     @PostMapping("/new")
     public ResponseEntity<?> create(
             @RequestBody Jugador j) {
@@ -56,6 +64,12 @@ public class JugadorService {
         return jugadorRepository.findAll();
     }
     
+    /**
+     * verifica el el jugador segun Password y nombre para otorgar acceso al juego
+     * @param nombre
+     * @param pass
+     * @return
+     */
     @GetMapping("find/by/nombre/{nombre}/pass/{pass}")
     public ResponseEntity<?> findByNombreAndPass(@PathVariable("nombre") String nombre, @PathVariable("pass") String pass) {
     	Jugador j = jugadorRepository.findByNombreAndPass(nombre, pass);
@@ -63,7 +77,7 @@ public class JugadorService {
     }
     
     /**
-     * Flujo reactivo que contiene los datos de persona
+     * Flujo reactivo que contiene los datos del jugador
      *
      * @return
      */
@@ -100,8 +114,7 @@ public class JugadorService {
     
     /**
      * Servicio reactivo que retorna la combinación de los dos flujos antes declarados
-     * Simplificacion de declaracion GET por "GetMapping"
-     *
+     * *
      * @return
      */
 

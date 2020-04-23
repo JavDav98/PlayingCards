@@ -28,6 +28,9 @@ import reactor.core.publisher.Flux;
 @Slf4j
 public class PartidaService {
 
+	/**
+	 * "@Autowired" Permite utilizar los metodos de la interfaz Partida y Partidajugador heredados de JPARepository
+	 */
 	@Autowired
 	PartidaRepository partidaRepository;
 	
@@ -44,6 +47,11 @@ public class PartidaService {
         notificationProcessor = EmitterProcessor.<Partida>create();
     }
 
+     /**
+      * Permite la creacion de una nueva partida por un jugador el cual es asignado al mismo tiempo
+      * @param p
+      * @return
+      */
     @PostMapping("/new")
     public ResponseEntity<?> create(
             @RequestBody Partida p) {
@@ -63,6 +71,12 @@ public class PartidaService {
         return new ResponseEntity<>(temp, HttpStatus.OK);
     }
     
+    
+    /**
+     * Recibe los id del jugador y la partida para que el jugador se una a la misma
+     * @param pj
+     * @return
+     */
     @PostMapping("/joingame")
     public ResponseEntity<?> joinGame(@RequestBody Partidajugador pj) {
     	
@@ -74,12 +88,21 @@ public class PartidaService {
     	return new ResponseEntity<>(p, HttpStatus.OK);
     	    	
     }   
-
+    
+    /**
+     * Consulta todas las partidas
+     * @return
+     */
     @GetMapping("/all")
     public List<Partida> getAll() {
         return partidaRepository.findAll();
     }
     
+    /**
+     * Consulta la exixtencia de una partida mediante el alias y si aun se puede unir a dicha partida
+     * @param alias
+     * @return
+     */
     @GetMapping("find/by/alias/{alias}")
     public ResponseEntity<?> findByNombreAndPass(@PathVariable("alias") String alias) {
     	Partida p = partidaRepository.findByAlias(alias);
@@ -91,7 +114,6 @@ public class PartidaService {
     	}else {
     		return new ResponseEntity<>(null, HttpStatus.OK);
     	}
-    	
     }    
     
     /**
