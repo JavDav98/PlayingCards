@@ -22,6 +22,8 @@ public class Cartas implements Serializable{
 
 	/**
 	 * 
+	 * Clase Carta reprensenta las cartas utilizadas dentro del juego
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
@@ -36,6 +38,9 @@ public class Cartas implements Serializable{
 	@Column
 	private int valor;
 	
+	/**
+	 * Define el vinculo con la clase Cartasjugador
+	 **/
 	@OneToMany(cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY,
 			mappedBy = "cartasidcartas")

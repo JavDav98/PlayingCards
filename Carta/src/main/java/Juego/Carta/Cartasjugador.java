@@ -18,6 +18,8 @@ public class Cartasjugador implements Serializable{
 
 	/**
 	 * 
+	 * Representa la asignación de cartas a un jugador, conforme avance la partida algunas cartas seran desasignadas del jugador 1 y asignadas al jugador 2
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	

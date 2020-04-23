@@ -22,6 +22,8 @@ public class Partida implements Serializable{
 
 	/**
 	 * 
+	 * Define la creacion de partidas
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
@@ -38,7 +40,10 @@ public class Partida implements Serializable{
 	
 	@Column
 	private int ganador;
-	
+	 
+	/**
+	  * Define la relacion entre la Partida y el jugador 
+	  */
 	@OneToMany(cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY,
 			mappedBy = "partidaidpartida")
