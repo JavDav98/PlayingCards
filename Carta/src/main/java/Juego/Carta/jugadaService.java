@@ -73,12 +73,10 @@ public class jugadaService {
     		if	(i<26) {    			
     			cj.setJugadoridjugador(p1);
     			cjRepository.save(cj);
-    			System.out.println("PLAYER1      "+cj.getCartasidcartas()+ "<----------->" +cj.getJugadoridjugador());
     			cartas.remove(num);
     		}else {
     			cj.setJugadoridjugador(p2);
     			cjRepository.save(cj);
-    			System.out.println("PLAYER2      "+cj.getCartasidcartas()+ "<----------->" +cj.getJugadoridjugador());
     			cartas.remove(num);
     		}
     	}
