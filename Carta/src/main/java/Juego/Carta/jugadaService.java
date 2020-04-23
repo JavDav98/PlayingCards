@@ -131,7 +131,7 @@ public class jugadaService {
     }
     
     /**
-     * Limpia los datos de los movimientos en la partida una vez se finaliza
+     * Limpia los datos de los movimientos en la partida una vez esta finaliza
      * @param p1
      * @param p2
      */
@@ -167,7 +167,7 @@ public class jugadaService {
     }
     
     /**
-     * Flujo reactivo que contiene los datos de persona
+     * Flujo reactivo que contiene los datos del Jugador que recibe modificaciones
      *
      * @return
      */
