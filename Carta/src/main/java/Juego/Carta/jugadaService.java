@@ -1,6 +1,7 @@
 package Juego.Carta;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -88,7 +89,59 @@ public class jugadaService {
         notificationProcessor.onNext(player2);
 
         return new ResponseEntity<>(player1, HttpStatus.OK);
-    }    
+    }  
+    
+    /**
+     * Notifica con un jugador id 0, que uno de los jugadores ya entrego su carta yncluyendo la carta entregada
+     * @param cj
+     * @return
+     */
+    @PostMapping("/notify/delivery")
+    public ResponseEntity<?> notifyDelivery(@RequestBody Cartasjugador cj){
+    	Cartasjugador cjtemp = cjRepository.findByCartasidcartasAndJugadoridjugador(cj.getCartasidcartas(), cj.getJugadoridjugador());
+    	Jugador j = new Jugador();
+    	j.setIdjugador(0);
+    	List<Cartasjugador> lcj = new ArrayList<>();
+    	lcj.add(cjtemp);
+    	j.setCartasjugador(lcj);
+    	
+    	notificationProcessor.onNext(j);
+    	
+    	return new ResponseEntity<>(j, HttpStatus.OK);
+    }
+    
+    /**
+     * Le quita la carta al que entregue la carta menor
+     * @param cj
+     * @return
+     */
+    @PostMapping("/remove/cards")
+    public ResponseEntity<?> removeCards(@RequestBody Cartasjugador cj){
+    	
+    	Cartasjugador cjtemp = cjRepository.findByCartasidcartasAndJugadoridjugador(cj.getCartasidcartas(), cj.getJugadoridjugador());
+    	cjRepository.delete(cjtemp);
+    	
+    	Jugador j = jugadorRepository.findById(cj.getJugadoridjugador()).get();
+
+        notificationProcessor.onNext(j);
+    	return new ResponseEntity<>(j, HttpStatus.OK);
+    }
+    
+    /**
+     * Le asigna la carta del jugador que entrego la carta menor al jugador que entrego la carta mayor
+     * @param cj
+     * @return
+     */
+    @PostMapping("/move/cards")
+    public ResponseEntity<?> moveCards(@RequestBody Cartasjugador cj){
+    	
+    	cjRepository.save(cj);
+    	
+    	Jugador j = jugadorRepository.findById(cj.getJugadoridjugador()).get();
+
+        notificationProcessor.onNext(j);
+    	return new ResponseEntity<>(j, HttpStatus.OK);
+    }
     
     /**
      * Devuelve el ganador de la partida
@@ -114,23 +167,6 @@ public class jugadaService {
     }
     
     /**
-     * Le quita la carta al que entregue la carta menor
-     * @param cj
-     * @return
-     */
-    @PostMapping("/remove/cards")
-    public ResponseEntity<?> removeCards(@RequestBody Cartasjugador cj){
-    	
-    	Cartasjugador cjtemp = cjRepository.findByCartasidcartasAndJugadoridjugador(cj.getCartasidcartas(), cj.getJugadoridjugador());
-    	cjRepository.delete(cjtemp);
-    	
-    	Jugador j = jugadorRepository.findById(cj.getJugadoridjugador()).get();
-
-        notificationProcessor.onNext(j);
-    	return new ResponseEntity<>(j, HttpStatus.OK);
-    }
-    
-    /**
      * Limpia los datos de los movimientos en la partida una vez esta finaliza
      * @param p1
      * @param p2
@@ -149,23 +185,7 @@ public class jugadaService {
     	}
     	
     }    
-    
-    /**
-     * Le asigna la carta del jugador que entrego la carta menor al jugador que entrego la carta mayor
-     * @param cj
-     * @return
-     */
-    @PostMapping("/move/cards")
-    public ResponseEntity<?> moveCards(@RequestBody Cartasjugador cj){
-    	
-    	cjRepository.save(cj);
-    	
-    	Jugador j = jugadorRepository.findById(cj.getJugadoridjugador()).get();
-
-        notificationProcessor.onNext(j);
-    	return new ResponseEntity<>(j, HttpStatus.OK);
-    }
-    
+        
     /**
      * Flujo reactivo que contiene los datos del Jugador que recibe modificaciones
      *
