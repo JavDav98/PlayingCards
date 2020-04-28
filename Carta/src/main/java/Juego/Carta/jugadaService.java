@@ -132,6 +132,7 @@ public class jugadaService {
      * @param cj
      * @return
      */
+    
     @PostMapping("/move/cards")
     public ResponseEntity<?> moveCards(@RequestBody Cartasjugador cj){
     	
