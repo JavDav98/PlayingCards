@@ -42,6 +42,9 @@ public class jugadaService {
 	@Autowired
 	JugadorRepository jugadorRepository;
 	
+	@Autowired
+	PartidaRepository partidaRepository;
+	
     /**
      * Notification emitter (emisor de notificaciones)
      */
@@ -88,7 +91,7 @@ public class jugadaService {
         notificationProcessor.onNext(player1);
         notificationProcessor.onNext(player2);
 
-        return new ResponseEntity<>(player1, HttpStatus.OK);
+        return new ResponseEntity<>(player2, HttpStatus.OK);
     }  
     
     /**
@@ -150,17 +153,23 @@ public class jugadaService {
      * @param p2
      * @return
      */
-    @GetMapping("/winer/{player1}/{player2}")
-    public ResponseEntity<?> gameOver(@PathVariable("player1")int p1, @PathVariable("player2")int p2){
+    @GetMapping("/winer/{idpartida}")
+    public ResponseEntity<?> gameOver(@PathVariable("idpartida")int id){
     	
-    	Jugador player1 = jugadorRepository.findById(p1).get();
-    	Jugador player2 = jugadorRepository.findById(p2).get();
+    	Partida p = partidaRepository.findById(id).get();
+    	
+    	Jugador player1 = jugadorRepository.findById(p.getPartidajugador().get(0).getJugadoridjugador()).get();
+    	Jugador player2 = jugadorRepository.findById(p.getPartidajugador().get(1).getJugadoridjugador()).get();;
     	
     	if	(player1.getCartasjugador().size()>player2.getCartasjugador().size()) {
     		notificationProcessor.onNext(player1);
+    		p.setGanador(player1.getIdjugador());
+    		partidaRepository.save(p);
     		return new ResponseEntity<>(player1, HttpStatus.OK);
     	}else if (player1.getCartasjugador().size()<player2.getCartasjugador().size()){
     		notificationProcessor.onNext(player2);
+    		p.setGanador(player2.getIdjugador());
+    		partidaRepository.save(p);
     		return new ResponseEntity<>(player2, HttpStatus.OK);
     	}else {
     		return new ResponseEntity<>(null, HttpStatus.OK);

@@ -73,6 +73,9 @@ public class JugadorService {
     @GetMapping("find/by/nombre/{nombre}/pass/{pass}")
     public ResponseEntity<?> findByNombreAndPass(@PathVariable("nombre") String nombre, @PathVariable("pass") String pass) {
     	Jugador j = jugadorRepository.findByNombreAndPass(nombre, pass);
+    	
+    	notificationProcessor.onNext(j);
+    	
     	return new ResponseEntity<>(j, HttpStatus.OK);
     }
     

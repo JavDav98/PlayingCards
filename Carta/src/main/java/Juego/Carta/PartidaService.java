@@ -97,7 +97,7 @@ public class PartidaService {
     public List<Partida> getAll() {
         return partidaRepository.findAll();
     }
-    
+       
     /**
      * Consulta la exixtencia de una partida mediante el alias y si aun se puede unir a dicha partida
      * @param alias
