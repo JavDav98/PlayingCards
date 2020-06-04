@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PartidaRepository extends JpaRepository <Partida, Serializable>{
+public interface PartidaRepository extends JpaRepository<Partida, Serializable>{
 
-	Partida findByAlias (String alias);
+	Partida findByAlias(String alias);
+
 }

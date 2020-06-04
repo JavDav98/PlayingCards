@@ -22,10 +22,9 @@ public class Jugador implements Serializable{
 
 	/**
 	 * 
-	 * La clase Jugador epresenta a la entidad jugador como usuario de la aplicacion que ingresa a diferentes partidas
-	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	
 	@Id
 	@Column
@@ -46,9 +45,6 @@ public class Jugador implements Serializable{
 			mappedBy = "jugadoridjugador")
 	private List<Partidajugador> partidajugador;
 	
-	/**
-	 * Define la relacion con la tabla Cartasjugador para asignar cartas al jugador
-	 */
 	@OneToMany(cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY,
 			mappedBy = "jugadoridjugador")
@@ -93,5 +89,9 @@ public class Jugador implements Serializable{
 	public void setCartasjugador(List<Cartasjugador> cartasjugador) {
 		this.cartasjugador = cartasjugador;
 	}
+	
+	
+
+	
 	
 }

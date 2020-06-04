@@ -61,6 +61,7 @@ public class JugadorService {
 
     @GetMapping("/all")
     public List<Jugador> getAll() {
+
         return jugadorRepository.findAll();
     }
     
@@ -78,9 +79,21 @@ public class JugadorService {
     	
     	return new ResponseEntity<>(j, HttpStatus.OK);
     }
-    
+
     /**
-     * Flujo reactivo que contiene los datos del jugador
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/find/by/id/{id}")
+    public ResponseEntity<?> findById(@PathVariable("id") int id){
+        Jugador j = jugadorRepository.findById(id).get();
+
+        return  new ResponseEntity<>(j, HttpStatus.OK);
+    }
+
+    /**
+     * Flujo reactivo que contiene los datos del Jugador que recibe modificaciones
      *
      * @return
      */
@@ -97,7 +110,7 @@ public class JugadorService {
                                     .build();
                         }).concatWith(Flux.never());
     }
-    
+
     /**
      * Flujo reactivo que posee un "heartbeat" para que la conexión del cliente se mantenga
      *
@@ -106,7 +119,7 @@ public class JugadorService {
     private Flux<ServerSentEvent<Jugador>> getNotificationHeartbeat() {
         return Flux.interval(Duration.ofSeconds(15))
                 .map(i -> {
-                    System.out.println(String.format("sending heartbeat [%s] ...", i.toString()));
+                    System.out.println(String.format("JugadorService sending heartbeat [%s] ...", i.toString()));
                     return ServerSentEvent.<Jugador>builder()
                             .id(String.valueOf(i))
                             .event("heartbeat-result")
@@ -114,16 +127,17 @@ public class JugadorService {
                             .build();
                 });
     }
-    
+
     /**
      * Servicio reactivo que retorna la combinación de los dos flujos antes declarados
-     * *
+     * Simplificacion de declaracion GET por "GetMapping"
+     *
      * @return
      */
 
     @GetMapping("/notification/sse")
     public Flux<ServerSentEvent<Jugador>>
-            getJobResultNotification() {
+    getJobResultNotification() {
 
         return Flux.merge(
                 getNotificationHeartbeat(),

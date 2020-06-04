@@ -42,14 +42,6 @@ public class Cartasjugador implements Serializable{
 		this.idcartasj = idcartasj;
 	}
 
-	public int getJugadoridjugador() {
-		return jugadoridjugador;
-	}
-
-	public void setJugadoridjugador(int jugadoridjugador) {
-		this.jugadoridjugador = jugadoridjugador;
-	}
-
 	public int getCartasidcartas() {
 		return cartasidcartas;
 	}
@@ -57,6 +49,12 @@ public class Cartasjugador implements Serializable{
 	public void setCartasidcartas(int cartasidcartas) {
 		this.cartasidcartas = cartasidcartas;
 	}
-	
-	
+
+	public int getJugadoridjugador() {
+		return jugadoridjugador;
+	}
+
+	public void setJugadoridjugador(int partidajugadoridpartidajugador) {
+		this.jugadoridjugador = partidajugadoridpartidajugador;
+	}
 }
