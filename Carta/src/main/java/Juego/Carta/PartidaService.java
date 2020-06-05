@@ -63,6 +63,12 @@ public class PartidaService {
          return partidaRepository.findAll();
      }
      
+     @GetMapping("/ganador/{idg}")
+     public List<Partida> getPartidas(@PathVariable("idg") int idg) {
+         return partidaRepository.findAllByGanador(idg);
+     }
+     
+     
      @GetMapping("/find/by/alias/{alias}")
      public ResponseEntity<?> finByAlias(@PathVariable("alias") String alias){
     	 Partida p = partidaRepository.findByAlias(alias);
